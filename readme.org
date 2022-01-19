@@ -1,1 +1,60 @@
 #+TITLE: Docker Notes
+
+* Architecture
+[[file:./images/docker_arch.png]]
+** runtime (runc/containerd)
+- starts/stops containers
+*** containerd
+:PROPERTIES:
+:ID:       b141229e-af40-4e32-990a-fc0ad6f7f5c4
+:END:
+- higher level, talks to runc
+- single process controlling [[id:da7f33d4-20f1-4d93-ab91-bb55e3c1fec2][runc]]
+*** runc
+:PROPERTIES:
+:ID:       da7f33d4-20f1-4d93-ab91-bb55e3c1fec2
+:END:
+- low-level, one per container
+** daemon dockerd (engine)
+- higher level tasks, sits above [[id:b141229e-af40-4e32-990a-fc0ad6f7f5c4][containerd]]
+- tasks:
+  - expose docker api
+  - manage images
+  - manage volumes
+** orchestrator
+- swarms of containers
+- docker swarm
+* Glossary
+** image
+:PROPERTIES:
+:ID:       8e883ffd-92fa-4e81-be05-976fd87f238a
+:END:
+- an object that contains an OS filesystem, application and all it's needed dependencies
+- similar to a VM template
+- similar to a /class/ in development
+- docker image subcommands [[id:bd2e4001-b894-41ee-ad02-263a8466b5c8][image]]
+** container
+:PROPERTIES:
+:ID:       bff52f4c-1b28-46b1-b635-dc80f3d09a1b
+:END:
+* Docker commands
+** image
+:PROPERTIES:
+:ID:       bd2e4001-b894-41ee-ad02-263a8466b5c8
+:END:
+- Notes:  [[id:8e883ffd-92fa-4e81-be05-976fd87f238a][image]]
+| sub command | description       | example           |
+|-------------+-------------------+-------------------|
+| ls          | view all images   | ~docker image ls~   |
+| pull        | download an image | ~docker image pull~ |
+|             |                   |                   |
+** container
+- Notes: [[id:bff52f4c-1b28-46b1-b635-dc80f3d09a1b][container]]
+| sub command | description             | example                                             | notes                                      |
+|-------------+-------------------------+-----------------------------------------------------+--------------------------------------------|
+| run         | launch a container      | ~docker container run -it ubuntu:latest /bin/bash~    | ~CTRL-PQ~ to leave a container               |
+| ls          | view running containers | ~docker container ls~                                 | default shows running, pass -a to show all |
+| exec        | run cmd in container    | ~docker container exec -it romantic_ardinghelli bash~ | ~exec <opts> <id> <cmd>~                     |
+| stop        | stop a container        | ~docker container stop romantic_ardinghelli~          |                                            |
+| rm          | remove a container      | ~docker container rm romantic_ardinghelli~            |                                            |
+|             |                         |                                                     |                                            |
